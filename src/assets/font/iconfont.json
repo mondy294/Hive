@@ -1,0 +1,100 @@
+{
+  "id": "3928033",
+  "name": "Hive",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "658025",
+      "name": "关闭",
+      "font_class": "guanbi",
+      "unicode": "e65a",
+      "unicode_decimal": 58970
+    },
+    {
+      "icon_id": "1027",
+      "name": "气泡",
+      "font_class": "qipao",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "7418",
+      "name": "返回",
+      "font_class": "fanhui",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "2048010",
+      "name": "蜜蜂",
+      "font_class": "mifeng",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
+      "icon_id": "3992223",
+      "name": "比特蜜蜂-官网-算力",
+      "font_class": "bitemifeng-guanwang-suanli",
+      "unicode": "e6de",
+      "unicode_decimal": 59102
+    },
+    {
+      "icon_id": "5401278",
+      "name": "添加好友",
+      "font_class": "tianjiahaoyou",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "7190186",
+      "name": "小蜜蜂",
+      "font_class": "xiaomifeng",
+      "unicode": "e765",
+      "unicode_decimal": 59237
+    },
+    {
+      "icon_id": "7567714",
+      "name": "24gl-bubbleDots",
+      "font_class": "24gl-bubbleDots",
+      "unicode": "e93e",
+      "unicode_decimal": 59710
+    },
+    {
+      "icon_id": "9080637",
+      "name": "bee",
+      "font_class": "bee",
+      "unicode": "e659",
+      "unicode_decimal": 58969
+    },
+    {
+      "icon_id": "10074382",
+      "name": "蜜蜂",
+      "font_class": "qunfeng",
+      "unicode": "e65b",
+      "unicode_decimal": 58971
+    },
+    {
+      "icon_id": "33047659",
+      "name": "蜂巢",
+      "font_class": "vitamin",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "14698081",
+      "name": "蜂巢",
+      "font_class": "fengchao",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "22679941",
+      "name": "蜂巢logo",
+      "font_class": "fengchaologo",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    }
+  ]
+}
