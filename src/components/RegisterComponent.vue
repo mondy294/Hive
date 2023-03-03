@@ -1,21 +1,66 @@
 <template>
-    <main class="main">
+    <main class="main" v-loading="loading">
         <div class="logo"></div>
         <div class="container">
             <h1>注册</h1>
-            <input type="text" class="nickname" placeholder="请取个名字">
-            <input type="text" class="account" placeholder="请输入您的账号">
-            <input type="password" class="password" placeholder="请输入密码">
+            <input type="text" class="nickname" placeholder="请取个名字" required v-model="nickname">
+            <input type="text" class="account" placeholder="请输入您的账号" required v-model="account">
+            <input type="password" class="password" placeholder="请输入密码" required v-model="password">
 
         </div>
-        <button class="login">注册</button>
+        <button class="login" @click="register">注册</button>
 
 
     </main>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
+import qs from 'qs'
+import axios from 'axios'
+import { Register } from '../api/index'
+import { ref } from 'vue'
+import { ElMessage } from 'element-plus'
+const emit = defineEmits(["backToLogin"])
+
+
+let account = ref('')
+let password = ref('')
+let nickname = ref('')
+let loading = ref(false)
+
+async function register() {
+    if (!account || !password || !nickname) {
+        ElMessage.error('请填写所有字段！')
+        return
+    }
+    const userInfo = {
+        account,
+        password,
+        nickname
+    }
+    loading.value = true
+    let res = await Register(userInfo)
+    if (res.data.status == 1) {
+        setTimeout(() => {
+            loading.value = false
+        }, 700);
+
+    }
+    else {
+        setTimeout(() => {
+            loading.value = false
+            account.value = ''
+            password.value = ''
+            nickname.value = ''
+            emit('backToLogin')
+        }, 700);
+    }
+
+
+
+
+}
 </script>
 
 <style lang="scss" scoped>
