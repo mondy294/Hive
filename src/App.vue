@@ -1,12 +1,12 @@
 <template>
-  <router-view></router-view>
-  <div>11111</div>
+  <div>
+    <router-view></router-view>
+    <TabBar></TabBar>
+  </div>
 </template>
 
-<script>
-export default {
-
-}
+<script setup>
+import TabBar from './components/TabBar.vue'
 </script>
 
-<style></style>
+<style lang="scss" scoped></style>
