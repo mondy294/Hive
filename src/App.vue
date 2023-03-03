@@ -1,13 +1,13 @@
 <template>
-  dd
+  <div>
+
+  </div>
 </template>
 
-<script>
-export default {
+<script setup lang="ts">
 
-}
 </script>
 
-<style>
+<style scoped>
 
 </style>
