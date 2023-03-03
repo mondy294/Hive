@@ -249,8 +249,8 @@ const addEmoji= (index:number)=> {
 .messageBox {
   overflow: auto;
   flex-grow: 1;
-//   margin: 3rem 0;
-  margin-top: 3rem;
+  margin: 3rem 0;
+  // margin-top: 3rem;
   .messageList {
     padding-bottom: 1.5rem;
   }

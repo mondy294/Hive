@@ -12,18 +12,30 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/home',
         component: Home,
+        meta:{
+            show:true
+        }
     },
     {
         path: '/chat',
-        component: Chat
+        component: Chat,
+        meta:{
+            show:false
+        }
     },
     {
         path: '/login',
-        component: Login
+        component: Login,
+        meta:{
+            show:false
+        }
     },
     {
         path: '/friends',
         component: Friends,
+        meta:{
+            show:true
+        }
     }
 ]
 

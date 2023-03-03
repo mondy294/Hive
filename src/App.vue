@@ -1,10 +1,17 @@
 <template>
-  <router-view></router-view>
+
+  <div>
+    <router-view></router-view>
+    <TabBar v-show="route.meta.show"></TabBar>
+  </div>
 </template>
 
 <script setup lang="ts">
+import TabBar from './components/TabBar.vue'
+import { useRoute } from 'vue-router';
+const route = useRoute()
+console.log(route);
 
 </script>
 
-
-<style></style>
+<style lang="scss" scoped></style>
