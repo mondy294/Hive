@@ -1,14 +1,14 @@
 <template>
-  <div @click.capture="hiddenEmoji" :style="{ height: height + 'px' }" id="container">
+  <div @pointerdown.capture="hiddenEmoji" :style="{ height: height + 'px' }" id="container">
     <div class="head">
       <i @click="outMessage" class="iconfont icon-fanhui"></i>
-      <span>开心就好</span>
-      <img src="../assets/images/mini-images/add group.png" alt="" srcset="" />
+      <span>{{ userInfo.nickname }}</span>
+      <img :src="userInfo.user_pic" alt="" srcset="" />
     </div>
     <div class="messageBox" ref="messageBox">
       <div class="messageList">
         <Message v-for="({ avator, directionRight, time, text }, index) in messageList" :avator="avator"
-          :direction-right="directionRight" :time="time" :text="text" />
+          :direction-right="directionRight" :time="calculateTime(time,index)" :text="text" />
       </div>
     </div>
     <div class="bottomInp" :class="focusInp">
@@ -25,114 +25,68 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router';
+import { ref, reactive, onMounted, nextTick,onBeforeMount,onBeforeUnmount,onUnmounted } from 'vue'
+import { useRouter,useRoute } from 'vue-router';
 import Message from './Message.vue'
+import websocketConfig from '../config/websocket'
+
+
+interface UserInfo {
+    id: number
+    account: string
+    password: string
+    nickname: string
+    user_pic: string
+}
 
 const router = useRouter()
-const messageList = reactive([
-  {
-    avator: '../assets/images/mini-images/Group 4.png',
-    text: '开发的，啥可大可久',
-    directionRight: false,
-    time: ''
-  },
-  {
-    avator: '../assets/images/mini-images/Group 4.png',
-    text: '开发的，啥可大可久多久多久的开发上课地方，是的开发绿色健康。上课地方叫来，都看见。的开发上课地方，是的开发绿色健康。上课地方叫来，都看见。',
-    directionRight: true,
-    time: '11月14日 14:23'
-  },
-  {
-    avator: '../assets/images/mini-images/Group 4.png',
-    text: '开发的，啥可大可久多久的开发上课地方，是的开发绿色健康。上课地方叫来，都看见。',
-    directionRight: true,
-    time: ''
-  },
-  {
-    avator: '../assets/images/mini-images/Group 4.png',
-    text: '开发的，啥可大可久多久的开发上课地方，是的开发绿色健康。上课地方叫来，都看见。',
-    directionRight: false,
-    time: ''
-  },
-  {
-    avator: '../assets/images/mini-images/Group 4.png',
-    text: '开发的，啥可大可久多久的开发上课地方，是的开发绿色健康。上课地方叫来，都看见。',
-    directionRight: false,
-    time: '11月14日 14:23'
-  },
-  {
-    avator: '../assets/images/mini-images/Group 4.png',
-    text: '开发的，啥可大可久多久的开发上课地方，是的开发绿色健康。上课地方叫来，都看见。',
-    directionRight: false,
-    time: ''
-  },
-  {
-    avator: '../assets/images/mini-images/Group 4.png',
-    text: '开发的，啥可大可久多久的开发上课地方，是的开发绿色健康。上课地方叫来，都看见。',
-    directionRight: true,
-    time: ''
-  },
-  {
-    avator: '../assets/images/mini-images/Group 4.png',
-    text: '开发的，啥可大可久',
-    directionRight: false,
-    time: ''
-  },
-  {
-    avator: '../assets/images/mini-images/Group 4.png',
-    text: '开发的，啥可大可久多久多久的开发上课地方，是的开发绿色健康。上课地方叫来，都看见。的开发上课地方，是的开发绿色健康。上课地方叫来，都看见。',
-    directionRight: true,
-    time: '11月14日 14:23'
-  },
-  {
-    avator: '../assets/images/mini-images/Group 4.png',
-    text: '开发的，啥可大可久多久的开发上课地方，是的开发绿色健康。上课地方叫来，都看见。',
-    directionRight: true,
-    time: ''
-  },
-  {
-    avator: '../assets/images/mini-images/Group 4.png',
-    text: '开发的，啥可大可久多久的开发上课地方，是的开发绿色健康。上课地方叫来，都看见。',
-    directionRight: false,
-    time: ''
-  },
-  {
-    avator: '../assets/images/mini-images/Group 4.png',
-    text: '开发的，啥可大可久多久的开发上课地方，是的开发绿色健康。上课地方叫来，都看见。',
-    directionRight: false,
-    time: '11月14日 14:23'
-  },
-  {
-    avator: '../assets/images/mini-images/Group 4.png',
-    text: '开发的，啥可大可久多久的开发上课地方，是的开发绿色健康。上课地方叫来，都看见。',
-    directionRight: false,
-    time: ''
-  },
-  {
-    avator: '../assets/images/mini-images/Group 4.png',
-    text: '开发的，啥可大可久多久的开发上课地方，是的开发绿色健康。上课地方叫来，都看见。',
-    directionRight: true,
-    time: ''
-  }
-])
+const route = useRoute()
+const userInfo = reactive({} as UserInfo)
+const messageList = reactive([] as any)
 const emojiList = ['😀', '😉', '😁', '😆', '😅', '😂', '🤣', '😊', '🙂', '😄', '🙃', '😇', '😃', '😚', '🥰', '😍', '🤔', '😘', '🤭', '🤫', '😐', '😶', '🤨', '😬', '😏', '😒', '🙄', '🤐', '🤥', '😪', '😌', '🤤']
 let height = ref(document.documentElement.clientHeight)
-
 const formSub = ref()
+const messageBox = ref()
+const focusInp = ref('')
+const inputValue = ref('')
+const emojiShow = ref('')
+const showEmoji = () => emojiShow.value = 'emojiShow'
+const hiddenEmoji = () => emojiShow.value = ''
+const socket = new WebSocket('ws://localhost:3000')
+const currentUser: UserInfo = JSON.parse(localStorage.getItem('user') as string) as UserInfo
+
+
+const {LOGIN,USER_IN_ROOM,USER_LEAVE_ROOM,MESSAGE} = websocketConfig
+socket.addEventListener('open',()=>{
+    socket.send(JSON.stringify({id:currentUser.id,type:LOGIN}))
+    socket.addEventListener('message',(e)=>{
+      const data = JSON.parse(e.data)
+      const dir = data.sender === currentUser.id
+      const userAvator = dir?currentUser.user_pic:userInfo.user_pic
+      messageList.push({
+        avator: userAvator,
+        text: data.message,
+        directionRight: dir,
+        time: Date.now()
+      })
+      focusHandle()
+})
+})
+
+
 const addMessage = () => {
   if (!inputValue.value) return
-  messageList.push({
-    avator: '../assets/images/mini-images/Group 4.png',
-    text: inputValue.value,
-    directionRight: true,
-    time: ''
-  })
+  socket.send(JSON.stringify({
+    sender:currentUser.id,
+    receiver:userInfo.id,
+    message:inputValue.value,
+    time:Date.now(),
+    type:MESSAGE
+  }))
   inputValue.value = ''
   nextTick(focusHandle)
 }
-const messageBox = ref()
-const focusInp = ref('')
+
 const focusHandle = () => {
   const box = messageBox.value
   box.scrollTop = box.firstElementChild.offsetHeight
@@ -142,15 +96,26 @@ const blurHandle = () => {
   focusInp.value = ''
 }
 const outMessage = () => router.push('/home')
-onMounted(() => {
-  document.addEventListener('resize', () => {
-    height.value = document.body.clientHeight
-  })
+const calculateTime = (time,index)=>{
+  if(index>0){
+    return +time - +messageList[index-1].time>3e5?time:''
+  }
+  return time
+}
+
+onBeforeMount(()=>{
+  Object.assign(userInfo,route.query)
+  const lastChat = localStorage.getItem(`${currentUser.id}&${userInfo.id}`)
+  if(lastChat){
+    Object.assign(messageList,JSON.parse(lastChat))
+  }
 })
-const inputValue = ref('')
-const emojiShow = ref('')
-const showEmoji = () => emojiShow.value = 'emojiShow'
-const hiddenEmoji = () => emojiShow.value = ''
+onBeforeUnmount(()=>{
+  localStorage.setItem(`${currentUser.id}&${userInfo.id}`,JSON.stringify(messageList))
+  socket.close()
+})
+
+
 const addEmoji = (index: number) => {
   inputValue.value += emojiList[index]
   emojiShow.value = 'emojiShow'

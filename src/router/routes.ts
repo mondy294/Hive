@@ -18,6 +18,7 @@ const routes: RouteRecordRaw[] = [
     },
     {
         path: '/chat',
+        name:'chat',
         component: Chat,
         meta:{
             show:false
