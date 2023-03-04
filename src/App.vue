@@ -1,5 +1,4 @@
 <template>
-
   <div>
     <router-view></router-view>
     <TabBar v-show="route.meta.show"></TabBar>
@@ -10,7 +9,6 @@
 import TabBar from './components/TabBar.vue'
 import { useRoute } from 'vue-router';
 const route = useRoute()
-console.log(route);
 
 </script>
 

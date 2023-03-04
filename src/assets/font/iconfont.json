@@ -6,6 +6,76 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "5835480",
+      "name": "夜间模式",
+      "font_class": "yejianmoshi",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "11239046",
+      "name": "设置",
+      "font_class": "shezhi1",
+      "unicode": "e646",
+      "unicode_decimal": 58950
+    },
+    {
+      "icon_id": "13474451",
+      "name": "更多",
+      "font_class": "gengduo",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "5151000",
+      "name": "退出",
+      "font_class": "tuichu",
+      "unicode": "e669",
+      "unicode_decimal": 58985
+    },
+    {
+      "icon_id": "8629253",
+      "name": "图片",
+      "font_class": "tupian",
+      "unicode": "e66b",
+      "unicode_decimal": 58987
+    },
+    {
+      "icon_id": "8897338",
+      "name": "编辑",
+      "font_class": "bianji",
+      "unicode": "e677",
+      "unicode_decimal": 58999
+    },
+    {
+      "icon_id": "13645026",
+      "name": "设置",
+      "font_class": "shezhi",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "17827594",
+      "name": "夜间晴",
+      "font_class": "yejianqing",
+      "unicode": "e664",
+      "unicode_decimal": 58980
+    },
+    {
+      "icon_id": "28108472",
+      "name": "直播",
+      "font_class": "zhibo",
+      "unicode": "e6b7",
+      "unicode_decimal": 59063
+    },
+    {
+      "icon_id": "77848",
+      "name": "返回2",
+      "font_class": "fanhui2",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
       "icon_id": "658025",
       "name": "关闭",
       "font_class": "guanbi",

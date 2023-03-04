@@ -8,19 +8,13 @@
       </span>
     </header>
 
-    <transition
-      name="animate__animated animate__bounce"
-      enter-active-class="animate__fadeInLeft"
-      leave-active-class="animate__fadeOutLeft"
-    >
+    <transition name="animate__animated animate__bounce" enter-active-class="animate__fadeInLeft"
+      leave-active-class="animate__fadeOutLeft">
       <LoginComponent v-show="show" key="1"></LoginComponent>
     </transition>
-    <transition
-      name="animate__animated animate__bounce"
-      enter-active-class="animate__fadeInRight"
-      leave-active-class="animate__fadeOutRight"
-    >
-      <RegisterComponent v-show="!show" key="2"></RegisterComponent>
+    <transition name="animate__animated animate__bounce" enter-active-class="animate__fadeInRight"
+      leave-active-class="animate__fadeOutRight">
+      <RegisterComponent v-show="!show" key="2" @backToLogin="backToLogin"></RegisterComponent>
     </transition>
   </div>
 </template>
@@ -29,6 +23,7 @@
 import LoginComponent from '../components/LoginComponent.vue'
 import RegisterComponent from '../components/RegisterComponent.vue'
 import { ref } from 'vue'
+import { ElMessage } from 'element-plus';
 
 let show = ref(true)
 
@@ -47,15 +42,22 @@ function throttle(fn: Function, wait: Number) {
 function change(): void {
   show.value = !show.value
 }
+function backToLogin() {
+  show.value = !show.value
+  setTimeout(() => {
+    ElMessage.success("注册成功！请登录")
+  }, 1000);
+}
 const realChange = throttle(change, 1000)
 </script>
 
 <style lang="scss" scoped>
-.box{
-    overflow: hidden;
-    width: 100%;
-    height: 100vh;
+.box {
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
 }
+
 .header {
   padding: 0.79rem 1.97rem;
   display: flex;

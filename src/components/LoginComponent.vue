@@ -1,20 +1,63 @@
 <template>
-    <main class="main">
+    <main class="main" v-loading="loading">
         <div class="logo"></div>
         <div class="container">
             <h1>登录</h1>
             <span class="hello">您好，欢迎来到蜂巢!</span>
-            <input type="text" class="account" placeholder="请输入您的账号">
-            <input type="password" class="password" placeholder="请输入密码">
+            <input type="text" class="account" placeholder="请输入您的账号" v-model="account">
+            <input type="password" class="password" placeholder="请输入密码" v-model="password">
 
         </div>
-        <button class="login">登录</button>
+        <button class="login" @click="login">登录</button>
 
 
     </main>
 </template>
 
-<script setup>
+<script setup lang="ts">
+
+import { Login } from '../api/index'
+import { ref } from 'vue'
+import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+let account = ref('')
+let password = ref('')
+let loading = ref(false)
+
+const blank = () => {
+
+    ElMessage.error('账号或密码未填写')
+}
+async function login() {
+
+    if (!account.value || !password.value) {
+        blank()
+        return
+    }
+    const userInfo = {
+        account,
+        password
+    }
+    loading.value = true
+    let res = await Login(userInfo)
+
+    if (res.data.status == 0) {
+        loading.value = false
+        account.value = ''
+        password.value = ''
+        localStorage.setItem('token', res.data.token)
+        localStorage.setItem('user', JSON.stringify(res.data.user))
+        router.push('/home')
+    } else {
+        setTimeout(() => {
+            loading.value = false
+        }, 700);
+    }
+}
+
+
 
 </script>
 
