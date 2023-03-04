@@ -2,7 +2,7 @@
     <div class="home">
         <header class="header">
             <div class="avator" @click="setting">
-                <img :src="userInfo.user_pic">
+                <img :src="PORT + userInfo.user_pic">
             </div>
             <div class="logo"></div>
             <div class="functions">
@@ -13,7 +13,7 @@
         <main class="main">
             <div @click="goChat" class="msg-item" v-for="(item, index) in friendsList" :key="item.id">
                 <span class="msg-avator">
-                    <img :src="item.user_pic" alt="">
+                    <img :src="PORT + item.user_pic" alt="">
                 </span>
                 <div class="msg-box">
                     <div class="up">
@@ -32,10 +32,10 @@
         <div class="box">
             <div class="mainarea">
                 <div class="black"></div>
-                <div class="mask" :style="{ backgroundImage: 'url(' + userInfo.user_pic + ')' }"></div>
+                <div class="mask" :style="{ backgroundImage: 'url(' + PORT + userInfo.user_pic + ')' }"></div>
                 <div class="showInfo">
                     <div class="avator">
-                        <img :src="userInfo.user_pic">
+                        <img :src="PORT + userInfo.user_pic">
                     </div>
                     <div class="main-message">
                         <span class="nickname">{{ userInfo.nickname }}</span>
@@ -44,7 +44,7 @@
                 </div>
 
             </div>
-            <div class="setting" v-for="({ logo, name }, index) in settings" :key="name">
+            <div class="setting" v-for="({ logo, name }, index) in settings" :key="name" @click="gosetting(name)">
                 <div class="left">
                     <div class="icon iconfont" :class="logo"></div>
                     <div class="settingName">{{ name }}</div>
@@ -70,6 +70,7 @@ import { useRouter } from 'vue-router';
 import { onMounted, ref, reactive } from 'vue';
 import { LTR, RTL } from 'element-plus/es/components/virtual-list/src/defaults';
 import { getFriendsList } from '../api/index'
+import { PORT } from '../HttpConfig'
 
 interface UserInfo {
     id: number
@@ -80,6 +81,8 @@ interface UserInfo {
 }
 
 const currentUser: UserInfo = JSON.parse(localStorage.getItem('user') as string) as UserInfo
+
+
 let userInfo = reactive(currentUser)
 
 const router = useRouter()
@@ -115,6 +118,24 @@ onMounted(async () => {
 
 
 })
+function toLogin() {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    router.push('/login')
+}
+function toEdit() {
+    router.push('/edit')
+}
+function gosetting(name: string) {
+    switch (name) {
+        case "退出登录":
+            toLogin()
+            break
+        case "编辑信息":
+            toEdit()
+
+    }
+}
 
 function willClose(done: Function) {
     drawer.value = false
@@ -153,12 +174,12 @@ const goChat = () => {
         height: 2.13rem;
         margin-left: 1rem;
         border-radius: 0.5rem;
-        background-color: red;
         overflow: hidden;
 
         img {
             width: 100%;
             height: 100%;
+            object-fit: cover;
 
         }
     }
@@ -218,7 +239,7 @@ const goChat = () => {
             img {
                 width: 100%;
                 height: 100%;
-
+                object-fit: cover;
             }
         }
 
@@ -315,7 +336,7 @@ const goChat = () => {
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: cover;
-                filter: blur(3px);
+                filter: blur(1.5px);
             }
 
             .showInfo {

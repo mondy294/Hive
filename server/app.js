@@ -18,10 +18,14 @@ app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.use(express.json({ limit: '5mb' }));
 
+app.use(express.static('assest'))
+
 //配置表单数据解析
 app.use(express.urlencoded({ extended: false }))
 
 app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/api/] }))
+
+
 
 //导入用户模块
 const userRouter = require('./router/user')
@@ -34,11 +38,11 @@ app.use((err, req, res, next) => {
     if (err instanceof joi.ValidationError) return res.send(err)
     //身份验证失败后的错误
     if (err.name === 'UnauthorizedError') {
-        return res.send('身份验证失败')
+        return res.send({ status: 1, message: '身份验证失败' })
     }
     //未知错误
     else {
-        return res.send(err)
+        return res.send({ status: 1, message: err })
     }
 })
 

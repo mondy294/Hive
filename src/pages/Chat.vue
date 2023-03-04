@@ -26,10 +26,13 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import Message from './Message.vue'
 
 const router = useRouter()
+const route = useRoute()
+// console.log(route.meta);
+
 const messageList = reactive([
   {
     avator: '../assets/images/mini-images/Group 4.png',
@@ -263,4 +266,5 @@ const addEmoji = (index: number) => {
   .messageList {
     padding-bottom: 1.5rem;
   }
-}</style>
+}
+</style>

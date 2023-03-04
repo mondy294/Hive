@@ -4,7 +4,7 @@
             <img src="../assets/images/mini-images/聊天@3x.png" alt="">
             <span>聊天</span>
         </div>
-        <div class="tab-item" @click="toTabBar('/login')">
+        <div class="tab-item" @click="toTabBar('')">
             <img src="../assets/images/mini-images/Group 4@3x.png" alt="">
             <span>Hive</span>
         </div>

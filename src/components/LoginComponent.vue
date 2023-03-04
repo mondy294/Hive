@@ -49,7 +49,7 @@ async function login() {
         password.value = ''
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('user', JSON.stringify(res.data.user))
-        router.push('/home')
+        router.push({ name: 'home' })
     } else {
         setTimeout(() => {
             loading.value = false

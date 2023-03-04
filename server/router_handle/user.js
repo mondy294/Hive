@@ -7,11 +7,16 @@ const jwt = require('jsonwebtoken')
 const config = require('../config')
 
 
+
+const fs = require('fs')
+
+
+
 exports.register = (req, res) => {
 
     const userInfo = req.body
+
     const { password: { _value: password }, nickname: { _value: nickname }, account: { _value: account } } = userInfo
-    console.log(password, nickname, account);
     let sql = "select * from user where account=?"
     db.query(sql, [account], function (err, results) {
         //如果查询失败
@@ -25,7 +30,7 @@ exports.register = (req, res) => {
             }
             else {
                 //插入新用户的数据
-                const user = { account: account, password: password, nickname: nickname, user_pic: defaultImg.src }
+                const user = { account: account, password: password, nickname: nickname, user_pic: 'default.jpg' }
                 let sql = 'insert into user (account,password,nickname,user_pic) values(?,?,?,?)'
                 db.query(sql, [user.account, user.password, user.nickname, user.user_pic], function (err, results) {
                     if (err || results.affectedRows !== 1) {
@@ -47,7 +52,7 @@ exports.login = (req, res) => {
     const sqlstr = 'select * from user where account=?'
     db.query(sqlstr, account, function (err, results) {
         if (err || results.length !== 1) {
-            return res.send({ status: 1, message: '账号错误' })
+            return res.send({ status: 1, message: '账号错误 未注册？' })
         }
         else {
             if (!(password == results[0].password)) {
@@ -63,7 +68,7 @@ exports.login = (req, res) => {
                     status: 0,
                     message: '登陆成功',
                     token: 'Bearer ' + tokenStr,
-                    user: user
+                    user: { id: user.id, user_pic: user.user_pic, nickname: user.nickname }
                 })
             }
         }
@@ -73,7 +78,6 @@ exports.login = (req, res) => {
 
 exports.getFriends = (req, res) => {
     const id = req.query.id
-    console.log(id);
     const sqlstr = 'select * from user where id != ?'
     db.query(sqlstr, id, function (err, results) {
         if (err) {
@@ -81,6 +85,36 @@ exports.getFriends = (req, res) => {
         }
         else {
             res.send({ list: results, status: 0, message: '获取成功' })
+        }
+    })
+}
+
+exports.updateAvator = async (req, res) => {
+    console.log(req);
+
+    let data = req.files.file
+    fs.writeFileSync('./assest/' + data.originalFilename, fs.readFileSync(data.path));
+
+    // 用户信息
+    const bu = req.files.json
+    const buffer = fs.readFileSync(bu.path)
+    const json = buffer.toString('utf-8')
+    const obj = JSON.parse(json)
+    const id = obj.id
+    const filename = data.originalFilename
+
+    const sqlstr = 'update user set user_pic=? where id=?'
+    db.query(sqlstr, [filename, id], function (err, results) {
+        if (err) {
+            return res.send({ status: 1, message: err })
+
+        }
+        else if (results.affectedRows !== 1) {
+            return res.send({ status: 1, message: "更换失败" })
+
+        }
+        else {
+            return res.send({ status: 0, message: "更改成功", data: { id, user_pic: filename } })
         }
     })
 }

@@ -26,3 +26,4 @@ export const getFriendsList = (params) => {
         params,
     })
 }
+

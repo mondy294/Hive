@@ -25,6 +25,7 @@ import RegisterComponent from '../components/RegisterComponent.vue'
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus';
 
+
 let show = ref(true)
 
 // 节流
