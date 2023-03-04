@@ -68,6 +68,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+
 import { onMounted, ref, reactive, onBeforeMount, onBeforeUnmount } from 'vue';
 import { LTR, RTL } from 'element-plus/es/components/virtual-list/src/defaults';
 import { PORT } from '../HttpConfig'
@@ -75,6 +76,7 @@ import { getFriendsList } from '../api/index'
 import websocketConfig from '../config/websocket'
 import { formatDate } from '../utils/index';
 import createWebsocket from '../api/websocket';
+
 
 
 interface UserInfo {
@@ -106,11 +108,11 @@ socket.addEventListener('open', () => {
 
 const currentUser: UserInfo = JSON.parse(localStorage.getItem('user') as string) as UserInfo
 
-
 let userInfo = reactive(currentUser)
 const router = useRouter()
 let drawer = ref(false)
 let friendsList = reactive([] as any)
+
 onBeforeMount(async () => {
     await getFriends()
     friendsList.forEach(item => {
@@ -134,6 +136,7 @@ onBeforeUnmount(() => {
                 localStorage.setItem(`${currentUser.id}&${item.id}`, JSON.stringify(newChatStr))
             } else {
                 localStorage.setItem(`${currentUser.id}&${item.id}`, JSON.stringify(item.catchInfo))
+
             }
         }
     })
@@ -157,6 +160,7 @@ const settings = [
         logo: 'icon-tupian'
     }
 ]
+
 
 async function getFriends() {
     let res = await getFriendsList({ id: userInfo.id })
@@ -282,6 +286,7 @@ const goChat = (userInfo) => {
         height: 5rem;
         background-color: #FFFFFF;
         overflow: hidden;
+
 
         .circle {
             position: absolute;

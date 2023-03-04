@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 const startWebsocket = require('./websocket/index')
 
 
-// 开启websocket服务
+//开启websocket服务
 const server = startWebsocket()
 server.listen(3000, () => {
     console.log('websocket running')

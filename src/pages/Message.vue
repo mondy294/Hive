@@ -65,6 +65,7 @@ const textClass = computed(() =>
     background-color: rgb(218, 159, 83);
     margin: 0 0.63rem;
 
+
     img {
       width: 2.5rem;
       height: 2.5rem;

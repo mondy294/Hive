@@ -9,6 +9,7 @@
       <div class="messageList">
         <Message v-for="({ avator, directionRight, time, text }, index) in messageList" :avator="PORT + avator"
           :direction-right="directionRight" :time="calculateTime(time, index)" :text="text" />
+
       </div>
     </div>
     <div class="bottomInp" :class="focusInp">
@@ -25,6 +26,7 @@
 </template>
 
 <script setup lang="ts">
+
 
 import { ref, reactive, onMounted, nextTick, onBeforeMount, onBeforeUnmount, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
@@ -59,6 +61,7 @@ const socket = createWebsocket()
 const currentUser: UserInfo = JSON.parse(localStorage.getItem('user') as string) as UserInfo
 
 
+
 const { LOGIN, USER_IN_ROOM, USER_LEAVE_ROOM, MESSAGE } = websocketConfig
 socket.addEventListener('open', () => {
   socket.send(JSON.stringify({ id: currentUser.id, type: LOGIN }))
@@ -74,6 +77,7 @@ socket.addEventListener('open', () => {
     })
     focusHandle()
   })
+
 })
 
 
