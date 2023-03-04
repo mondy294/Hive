@@ -17,3 +17,12 @@ export const Login = (data: any) => {
         data,
     })
 }
+
+//获取好友列表
+export const getFriendsList = (params) => {
+    return requests({
+        url: '/getFriends',
+        method: 'get',
+        params,
+    })
+}
