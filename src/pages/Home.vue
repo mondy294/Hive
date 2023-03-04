@@ -27,6 +27,15 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+
+const socket = new WebSocket('ws://localhost:3000')
+socket.addEventListener('open',()=>{
+    console.log('open');
+})
+socket.addEventListener('message',(e)=>{
+    console.log(e)
+})
+
 const router = useRouter()
 const goChat = ()=>{
     router.push('/chat')
