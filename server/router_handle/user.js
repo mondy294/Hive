@@ -15,7 +15,7 @@ const fs = require('fs')
 exports.register = (req, res) => {
 
     const userInfo = req.body
-
+    console.log(userInfo);
     const { password: { _value: password }, nickname: { _value: nickname }, account: { _value: account } } = userInfo
     let sql = "select * from user where account=?"
     db.query(sql, [account], function (err, results) {
@@ -47,8 +47,11 @@ exports.register = (req, res) => {
 
 }
 exports.login = (req, res) => {
+
     const userInfo = req.body
+    console.log(userInfo);
     const { password: { _value: password }, account: { _value: account } } = userInfo
+    console.log(password, account);
     const sqlstr = 'select * from user where account=?'
     db.query(sqlstr, account, function (err, results) {
         if (err || results.length !== 1) {
@@ -78,6 +81,7 @@ exports.login = (req, res) => {
 
 exports.getFriends = (req, res) => {
     const id = req.query.id
+    console.log(id);
     const sqlstr = 'select * from user where id != ?'
     db.query(sqlstr, id, function (err, results) {
         if (err) {
@@ -90,7 +94,7 @@ exports.getFriends = (req, res) => {
 }
 
 exports.updateAvator = async (req, res) => {
-    console.log(req);
+    // console.log(req);
 
     let data = req.files.file
     fs.writeFileSync('./assest/' + data.originalFilename, fs.readFileSync(data.path));

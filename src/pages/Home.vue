@@ -11,19 +11,20 @@
             </div>
         </header>
         <main class="main">
-            <div @click="goChat" class="msg-item" v-for="(item, index) in friendsList" :key="item.id">
+            <div class="msg-item" v-for="(item, index) in friendsList" :key="item.id" @click="goChat(item)">
                 <span class="msg-avator">
                     <img :src="PORT + item.user_pic" alt="">
                 </span>
                 <div class="msg-box">
                     <div class="up">
                         <span class="name">{{ item.nickname }}</span>
-                        <span class="time">上午7:45</span>
+                        <span class="time">{{ formatDate(item.lastChatInfo?.time) }}</span>
                     </div>
                     <div class="down">
-                        <span class="hello">你好，我是你的新朋友</span>
+                        <span class="hello">{{ item.lastChatInfo?.text }}</span>
                     </div>
                 </div>
+                <div v-if="item.catchInfo?.length" class="circle">{{ item.catchInfo.length }}</div>
             </div>
         </main>
     </div>
@@ -67,10 +68,14 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { onMounted, ref, reactive } from 'vue';
+import { onMounted, ref, reactive, onBeforeMount, onBeforeUnmount } from 'vue';
 import { LTR, RTL } from 'element-plus/es/components/virtual-list/src/defaults';
-import { getFriendsList } from '../api/index'
 import { PORT } from '../HttpConfig'
+import { getFriendsList } from '../api/index'
+import websocketConfig from '../config/websocket'
+import { formatDate } from '../utils/index';
+import createWebsocket from '../api/websocket';
+
 
 interface UserInfo {
     id: number
@@ -80,14 +85,59 @@ interface UserInfo {
     user_pic: string
 }
 
+const socket = createWebsocket()
+const { LOGIN, USER_IN_ROOM, USER_LEAVE_ROOM, MESSAGE } = websocketConfig
+socket.addEventListener('open', () => {
+    socket.send(JSON.stringify({ id: currentUser.id, type: LOGIN }))
+    socket.addEventListener('message', (e) => {
+        const data = JSON.parse(e.data)
+        friendsList.forEach(item => {
+            if (item.id == data.sender) {
+                item.lastChatInfo.time = data.time
+                item.lastChatInfo.text = data.message
+                item.catchInfo.push({ ...data, avator: item.user_pic, directionRight: false, text: data.message })
+                return
+            }
+        })
+    })
+})
+
+// localStorage.clear()
+
 const currentUser: UserInfo = JSON.parse(localStorage.getItem('user') as string) as UserInfo
 
 
 let userInfo = reactive(currentUser)
-
 const router = useRouter()
 let drawer = ref(false)
 let friendsList = reactive([] as any)
+onBeforeMount(async () => {
+    await getFriends()
+    friendsList.forEach(item => {
+        const chatListStr = localStorage.getItem(`${currentUser.id}&${item.id}`)
+        item.catchInfo = []
+        if (chatListStr !== '[]' && chatListStr) {
+            const chatData = JSON.parse(chatListStr)
+            item.lastChatInfo = chatData[chatData.length - 1]
+        } else {
+            item.lastChatInfo = { time: Date.now(), text: '还未发送过消息' }
+        }
+    })
+})
+onBeforeUnmount(() => {
+    friendsList.forEach(item => {
+        if (item.catchInfo.length !== 0) {
+            const chatListStr = localStorage.getItem(`${currentUser.id}&${item.id}`)
+            const newChatStr = JSON.parse(chatListStr as string)
+            if (chatListStr && chatListStr.length !== 0) {
+                newChatStr.push(...item.catchInfo)
+                localStorage.setItem(`${currentUser.id}&${item.id}`, JSON.stringify(newChatStr))
+            } else {
+                localStorage.setItem(`${currentUser.id}&${item.id}`, JSON.stringify(item.catchInfo))
+            }
+        }
+    })
+})
 
 const settings = [
     {
@@ -108,14 +158,14 @@ const settings = [
     }
 ]
 
-
-onMounted(async () => {
-
+async function getFriends() {
     let res = await getFriendsList({ id: userInfo.id })
     if (res.data.status == 0) {
         friendsList.push(...res.data.list as object[])
     }
+}
 
+onMounted(() => {
 
 })
 function toLogin() {
@@ -145,8 +195,11 @@ function willClose(done: Function) {
 function setting() {
     drawer.value = true
 }
-const goChat = () => {
-    router.push('/chat')
+const goChat = (userInfo) => {
+    router.push({
+        name: 'chat',
+        query: { ...userInfo }
+    })
 }
 </script>
 
@@ -228,6 +281,19 @@ const goChat = () => {
         width: 100%;
         height: 5rem;
         background-color: #FFFFFF;
+        overflow: hidden;
+
+        .circle {
+            position: absolute;
+            right: 1rem;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            width: 1rem;
+            height: 1rem;
+            text-align: center;
+            line-height: 1rem;
+        }
 
         .msg-avator {
             width: 3rem;

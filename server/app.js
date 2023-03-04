@@ -3,6 +3,14 @@ const app = express()
 const fs = require("fs");
 const joi = require('@hapi/joi')
 const bodyParser = require('body-parser')
+const startWebsocket = require('./websocket/index')
+
+
+// 开启websocket服务
+const server = startWebsocket()
+server.listen(3000, () => {
+    console.log('websocket running')
+})
 
 //允许跨域
 const cors = require('cors')
@@ -18,8 +26,8 @@ app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.use(express.json({ limit: '5mb' }));
 
-app.use(express.static('assest'))
 
+app.use(express.static('assest'))
 //配置表单数据解析
 app.use(express.urlencoded({ extended: false }))
 

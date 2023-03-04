@@ -1,7 +1,7 @@
 <template>
-  <div class="message" :style="{ direction: dir }">
+  <div class="message" :style="{ direction: dir as any }">
     <div class="time">
-      <span v-if="time">{{ time }}</span>
+      <span v-if="time">{{ formatDate(time) }}</span>
     </div>
     <div class="avator">
       <img :src="avator" alt="" srcset="" />
@@ -12,6 +12,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { formatDate } from '../utils/index';
 
 const props = defineProps({
   avator: {
@@ -38,13 +39,16 @@ const textClass = computed(() =>
   width: 100%;
   min-height: 50px;
   margin-top: 1.40rem;
+
   * {
     display: inline-block;
     vertical-align: top;
   }
+
   .time {
     display: block;
     text-align: center;
+
     span {
       font-family: PingFangSC-Regular;
       font-size: 0.75rem;
@@ -53,13 +57,20 @@ const textClass = computed(() =>
       font-weight: 400;
     }
   }
+
   .avator {
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 0.63rem;
     background-color: rgb(218, 159, 83);
     margin: 0 0.63rem;
+
+    img {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
   }
+
   .text {
     padding: 0.5rem;
     max-width: 14rem;
@@ -68,11 +79,13 @@ const textClass = computed(() =>
     color: #272832;
     font-weight: 400;
   }
+
   .rightText {
     background: #ffe431;
     border-radius: 0.63rem 0 0.63rem 0.63rem;
     text-align: left;
   }
+
   .leftText {
     background: #ffffff;
     border-radius: 0 0.63rem 0.63rem;
