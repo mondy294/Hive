@@ -17,7 +17,7 @@
       <form ref="formSub" @submit.prevent="addMessage" action=""><input v-model="inputValue" @focus="focusHandle"
           @blur="blurHandle" type="text" /></form>
       <img @pointerdown="showEmoji" src="../assets/images/mini-images/表情.png" alt="" />
-      <img src="../assets/images/mini-images/add group.png" alt="" />
+      <img src="../assets/images/mini-images/addgroup.png" alt="" />
     </div>
     <div class="emoji" :class="emojiShow">
       <span v-for="(emoji, index) in emojiList" @pointerdown="addEmoji(index)">{{ emoji }}</span>

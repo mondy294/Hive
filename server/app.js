@@ -4,9 +4,11 @@ const fs = require("fs");
 const joi = require('@hapi/joi')
 const bodyParser = require('body-parser')
 const startWebsocket = require('./websocket/index')
+const history = require('connect-history-api-fallback')
 
+app.use(history())
 
-//开启websocket服务
+// 开启websocket服务
 const server = startWebsocket()
 server.listen(3000, () => {
     console.log('websocket running')
@@ -28,6 +30,7 @@ app.use(express.json({ limit: '5mb' }));
 
 
 app.use(express.static('assest'))
+app.use(express.static('dist'))
 //配置表单数据解析
 app.use(express.urlencoded({ extended: false }))
 

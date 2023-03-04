@@ -5,11 +5,11 @@
             <span>聊天</span>
         </div>
         <div class="tab-item" @click="toTabBar('')">
-            <img src="../assets/images/mini-images/Group 4@3x.png" alt="">
+            <img src="../assets/images/mini-images/Group4.png" alt="">
             <span>Hive</span>
         </div>
         <div class="tab-item">
-            <img src="../assets/images/mini-images/Group 4@3x.png" alt="">
+            <img src="../assets/images/mini-images/Group4.png" alt="">
             <span>未来</span>
         </div>
     </div>

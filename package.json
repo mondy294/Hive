@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "server":"node server/app.js",
+    "server": "nodemon server/app.js",
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
