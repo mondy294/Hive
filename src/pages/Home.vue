@@ -73,6 +73,7 @@ import { LTR, RTL } from 'element-plus/es/components/virtual-list/src/defaults';
 import {getFriendsList} from '../api/index'
 import websocketConfig from '../config/websocket'
 import { formatDate } from '../utils/index';
+import createWebsocket from '../api/websocket';
 
 interface UserInfo {
     id: number
@@ -82,7 +83,7 @@ interface UserInfo {
     user_pic: string
 }
 
-const socket = new WebSocket('ws://localhost:3000')
+const socket = createWebsocket()
 const {LOGIN,USER_IN_ROOM,USER_LEAVE_ROOM,MESSAGE} = websocketConfig
 socket.addEventListener('open',()=>{
     socket.send(JSON.stringify({id:currentUser.id,type:LOGIN}))

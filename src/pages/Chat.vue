@@ -29,6 +29,7 @@ import { ref, reactive, onMounted, nextTick,onBeforeMount,onBeforeUnmount,onUnmo
 import { useRouter,useRoute } from 'vue-router';
 import Message from './Message.vue'
 import websocketConfig from '../config/websocket'
+import createWebsocket from '../api/websocket';
 
 
 interface UserInfo {
@@ -52,7 +53,7 @@ const inputValue = ref('')
 const emojiShow = ref('')
 const showEmoji = () => emojiShow.value = 'emojiShow'
 const hiddenEmoji = () => emojiShow.value = ''
-const socket = new WebSocket('ws://localhost:3000')
+const socket = createWebsocket()
 const currentUser: UserInfo = JSON.parse(localStorage.getItem('user') as string) as UserInfo
 
 
