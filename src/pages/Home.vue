@@ -11,11 +11,13 @@
             </div>
         </header>
         <main class="main">
-            <div @pointerdown="goChat" class="msg-item">
-                <span class="msg-avator"></span>
+            <div @click="goChat" class="msg-item" v-for="(item, index) in friendsList" :key="item.id">
+                <span class="msg-avator">
+                    <img :src="item.user_pic" alt="">
+                </span>
                 <div class="msg-box">
                     <div class="up">
-                        <span class="name">好友请求</span>
+                        <span class="name">{{ item.nickname }}</span>
                         <span class="time">上午7:45</span>
                     </div>
                     <div class="down">
@@ -67,6 +69,7 @@
 import { useRouter } from 'vue-router';
 import { onMounted, ref, reactive } from 'vue';
 import { LTR, RTL } from 'element-plus/es/components/virtual-list/src/defaults';
+import { getFriendsList } from '../api/index'
 
 interface UserInfo {
     id: number
@@ -81,6 +84,7 @@ let userInfo = reactive(currentUser)
 
 const router = useRouter()
 let drawer = ref(false)
+let friendsList = reactive([] as any)
 
 const settings = [
     {
@@ -102,10 +106,16 @@ const settings = [
 ]
 
 
-onMounted(() => {
-    // console.log(userInfo.id);
+onMounted(async () => {
+
+    let res = await getFriendsList({ id: userInfo.id })
+    if (res.data.status == 0) {
+        friendsList.push(...res.data.list as object[])
+    }
+
 
 })
+
 function willClose(done: Function) {
     drawer.value = false
     done()
@@ -203,6 +213,13 @@ const goChat = () => {
             height: 3rem;
             background: #FFE431;
             border-radius: 0.75rem;
+            overflow: hidden;
+
+            img {
+                width: 100%;
+                height: 100%;
+
+            }
         }
 
         .msg-box {
