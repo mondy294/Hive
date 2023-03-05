@@ -74,7 +74,7 @@ async function login() {
         margin-top: 2.5rem;
         width: 6rem;
         height: 2.86rem;
-        background-image: url('../assets/images/mini-images/火@3x.png');
+        background-image: url('../assets/images/mini-images/火.png');
         background-size: cover;
     }
 

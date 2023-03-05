@@ -266,7 +266,7 @@ const goChat = (userInfo) => {
         .add {
             width: 1.5rem;
             height: 1.5rem;
-            background-image: url('../assets/images/mini-images/add group.png');
+            background-image: url('../assets/images/mini-images/addgroup.png');
         }
     }
 

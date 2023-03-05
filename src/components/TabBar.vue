@@ -1,7 +1,7 @@
 <template>
     <div class="tabbar">
         <div class="tab-item" @click="toTabBar('/home')">
-            <img src="../assets/images/mini-images/聊天@3x.png" alt="">
+            <img src="../assets/images/mini-images/聊天.png" alt="">
             <span>聊天</span>
         </div>
         <div class="tab-item" @click="toTabBar('')">
